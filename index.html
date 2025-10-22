@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yakings Enterprise - Aromatic Schnapps & Bitters Showcase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the Inter font and smooth transitions */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light gray background */
+        }
+        .image-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        }
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and the left and right sides */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="min-h-screen flex flex-col">
+
+        <header class="bg-indigo-700 text-white shadow-lg sticky top-0 z-10">
+            <div class="max-w-7xl mx-auto p-4 md:p-6">
+                <h1 class="text-3xl md:text-4xl font-extrabold mb-1">
+                    Yakings Enterprise Showcase
+                </h1>
+                <p class="text-indigo-200 text-sm md:text-base">
+                    Welcome to the home of best aromatic schnapps and bitters!</p>
+                <p class="mt-2 text-yellow-300 font-semibold text-base md:text-lg">
+                    For bulk purchase / any inquiries contact: <span class="text-white">0271338899</span>
+                </p>
+            </div>
+        </header>
+
+        <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+            <section class="mb-10 p-6 bg-white rounded-xl shadow-md border-t-4 border-indigo-500">
+                <h2 class="text-2xl font-bold text-gray-800 mb-3">Our Mission and Service</h2>
+                
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">Mission</h3>
+                <p class="text-gray-600 italic mb-4 leading-relaxed">
+                    "To honor Ghana's rich tradition of herbal craftsmanship by producing premium, aromatic schnapps and bitters, delivering authentic, high-quality alcoholic beverages that delight our customers and elevate every celebration."
+                </p>
+
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">About Yakings Enterprise:</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Yakings Enterprise is a dedicated manufacturer of high-quality alcoholic beverages, specializing in the production of distinct <b>aromatic schnapps</b> and powerful, traditional <b>bitters</b>. Rooted in Ghanaian heritage, we blend time-honored recipes with modern production standards to create drinks that are rich in flavor and authenticity.
+                </p>
+                <p class="text-gray-600 mt-2 leading-relaxed">
+                    Our brand is proudly represented on social media by <a href="https://www.tiktok.com/@Oseikrom.bitters" target="_blank" class="text-indigo-400 hover:text-indigo-300">@Oseikrom.bitters</a> on TikTok, where we connect with our community and share the passion behind our spirits. For bulk purchase or any inquiries, please contact us directly at <a href="tel:+233271338899">0271338899</a>.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Our 23 Featured Products</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="image-gallery">
+
+                    </div>
+            </section>
+
+        </main>
+
+        <footer class="bg-gray-800 text-white mt-10">
+            <div class="max-w-7xl mx-auto p-6 text-center">
+                <p class="text-sm mb-2">&copy; <span id="year"></span> Yakings Enterprise. All rights reserved.</p>
+                <p class="text-xs text-gray-400">
+                    TikTok: <a href="https://www.tiktok.com/@Oseikrom.bitters" target="_blank" class="text-indigo-400 hover:text-indigo-300">@Oseikrom.bitters</a>
+                </p>
+            </div>
+        </footer>
+
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <span class="close" onclick="document.getElementById('modal').style.display='none'">&times;</span>
+                <img src="https://placehold.co/400x300/CCCCCC/333333?text=Image+missing" alt="Modal Image" id="modal-image">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onclick="downloadImage()">Download Image</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const galleryGrid = document.getElementById('image-gallery');
+        const modal = document.getElementById('modal');
+        const modalImage = document.getElementById('modal-image');
+
+        function openModal(imageSrc) {
+            modal.style.display = "block";
+            modalImage.src = imageSrc;
+        }
+
+        function downloadImage() {
+            const image = modalImage.src;
+            const link = document.createElement('a');
+            link.href = image;
+            link.setAttribute('download', 'Yakings_Enterprise_Product_Photo.jpg');
+            link.click();
+        }
+
+        for (let i = 1; i <= 23; i++) {
+            // Generates file names like: 1 (1).JPG, 1 (2).JPG, ..., 1 (23).JPG
+            const fileName = `1 (${i}).JPG`; 
+            const imageTitle = ``;
+
+            const cardHtml = `
+                <div class="image-card bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all" onclick="openModal('${fileName}')">
+                    <img 
+                        src="${fileName}" 
+                        alt="${imageTitle} - Yakings Enterprise" 
+                        class="w-full h-48 object-cover" 
+                        loading="lazy"
+                        onerror="this.onerror=null; this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+missing';"
+                    >
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800">
+                            ${imageTitle}
+                        </h3>
+                        <p class="text-sm text-gray-500">
+                            A showcase of our quality aromatic schnapps and bitters.
+                        </p>
+                    </div>
+                </div>
+            `;
+            galleryGrid.insertAdjacentHTML('beforeend', cardHtml);
+        }
+        
+        // Script to set the current year in the footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
